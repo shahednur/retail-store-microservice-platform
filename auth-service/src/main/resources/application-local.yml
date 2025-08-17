@@ -4,14 +4,14 @@ spring:
       on-profile: local
 
   datasource:
-    url: jdbc:mysql://localhost:3306/authservice?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/authservice?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
