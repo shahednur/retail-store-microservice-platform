@@ -1,7 +1,13 @@
 spring:
   application:
     name: auth-service
-
+  profiles:
+    active: local
+# JWT Configuration
+jwt:
+  secret: bXlzdXBlcmxvbmdyYW5kb21zZWN1cmVrZXlteXN1cGVybG9uZw==
+  access-token-exp-ms: 900000
+  refresh-token-exp-ms: 1209600000
 eureka:
   instance:
     prefer-ip-address: true
