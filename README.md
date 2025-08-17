@@ -36,20 +36,37 @@ This system demonstrates **real-world enterprise architecture** with modular ser
 ## 🏗️ High-Level Architecture
 ```mermaid
 flowchart LR
-    Client((Client)) --> Gateway[API Gateway]
-    Gateway --> ProductService[Product Service]
-    Gateway --> InventoryService[Inventory Service]
-    Gateway --> CartService[Cart Service]
-    Gateway --> OrderService[Order Service]
-    Gateway --> PaymentService[Payment Service]
-    Gateway --> AIService[AI Recommendation Engine]
+  client[Client Apps] --> gw[Gateway Service]
+  gw -->|/auth/**| auth[Auth Service]
+  gw -->|/products/**| prod[Product Service]
+  gw -->|/orders/**| ord[Order Service]
+  gw -->|/payments/**| pay[Payment Service]
+  gw -->|/recommendations/**| ai[AI Recommendation Service]
 
-    ProductService --> MySQL1[(MySQL: ProductDB)]
-    InventoryService --> MySQL2[(MySQL: InventoryDB)]
-    CartService --> Redis[(Redis Cache)]
-    OrderService --> MySQL3[(MySQL: OrderDB)]
-    PaymentService --> MySQL4[(MySQL: PaymentDB)]
-    AIService --> Mongo[(MongoDB: RecommendationDB)]
+  subgraph Data
+    pg[(PostgreSQL Cluster)]
+    redis[(Redis Cache)]
+    obj[(Object Storage: S3/GCS)]
+  end
+
+  subgraph Messaging
+    kafka[(Kafka/RabbitMQ)]
+  end
+
+  auth --> pg
+  prod --> pg
+  ord --> pg
+  pay --> pg
+  ai --> pg
+  prod --- redis
+  auth --- redis
+
+  ord <-.productReserved/.-> prod
+  ord <-.paymentAuthorized/.-> pay
+  ord <-.orderEvents/.-> kafka
+  pay <-.paymentEvents/.-> kafka
+  prod <-.catalogEvents/.-> kafka
+  ai <-.userBehavior/.-> kafka
 ```
 ---
 
