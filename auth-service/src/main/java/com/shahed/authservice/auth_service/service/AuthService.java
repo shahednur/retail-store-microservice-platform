@@ -13,23 +13,25 @@ import com.shahed.authservice.auth_service.entity.User;
 import com.shahed.authservice.auth_service.exception.EmailAlreadyExistsException;
 import com.shahed.authservice.auth_service.exception.UserNotFoundException;
 import com.shahed.authservice.auth_service.exception.UsernameAlreadyExistsException;
+import com.shahed.authservice.auth_service.repository.RefreshTokenRepository;
+import com.shahed.authservice.auth_service.repository.RoleRepository;
 import com.shahed.authservice.auth_service.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Service
 @Transactional
-public class UserService {
+@RequiredArgsConstructor
+public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final RoleRepository roleRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private JwtUtil JwtUtil;
 
     // Create a new user
     public UserResponse createUser(CreateUserRequest request) {

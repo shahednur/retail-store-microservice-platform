@@ -15,7 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import com.shahed.authservice.auth_service.dto.CreateUserRequest;
 import com.shahed.authservice.auth_service.dto.UserResponse;
-import com.shahed.authservice.auth_service.service.UserService;
+import com.shahed.authservice.auth_service.service.AuthService;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,9 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @CrossOrigin(origins = "*")
 public class UserController {
 
-    private final UserService userService;
+    private final AuthService userService;
 
-    public UserController(UserService userService) {
+    public UserController(AuthService userService) {
         this.userService = userService;
     }
 
