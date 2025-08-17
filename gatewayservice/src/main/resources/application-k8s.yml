@@ -1,0 +1,10 @@
+spring:
+  profiles: k8s
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://discoveryservice:8761/eureka
+
+  instance:
+    hostname: gateway-service

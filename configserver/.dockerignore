@@ -1,0 +1,22 @@
+# Avoid unnecessary files and folders
+.git
+.gitignore
+.DS_Store
+*.md
+*.log
+*.iml
+*.idea/
+.vscode/
+target/
+build/
+out/
+dist/
+tmp/
+node_modules/
+.env
+.env.*
+docker-compose.yml
+*.local
+*.bak
+*.swp
+*.old

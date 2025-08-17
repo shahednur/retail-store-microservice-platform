@@ -1,0 +1,15 @@
+spring:
+  profiles: docker
+
+  datasource:
+    url: jdbc:mysql://mysql-service:3306/notifications?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+eureka:
+  instance:
+    hostname: notification-service
+  client:
+    service-url:
+      defaultZone: http://discoveryservice:8761/eureka
