@@ -1,6 +1,6 @@
 package com.shahed.authservice.auth_service.dto;
 
-import com.shahed.authservice.auth_service.entity.Role;
+import java.util.Set;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,9 +11,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class CreateUserRequest {
 
     @NotBlank(message = "Username is required")
@@ -29,5 +29,11 @@ public class CreateUserRequest {
     private String password;
 
     @Builder.Default
-    private Role role = Role.ADMIN;
+    private boolean enabled = true;
+
+    /**
+     * Roles to be assigned to the user. Defaults to empty.
+     */
+    @Builder.Default
+    private Set<String> roles = Set.of("USER");
 }

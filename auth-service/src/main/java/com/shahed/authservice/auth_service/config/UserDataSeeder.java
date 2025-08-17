@@ -39,9 +39,9 @@ public class UserDataSeeder implements CommandLineRunner {
 
             User user = User.builder()
                     .username(username)
-                    .email(email)
+                    // .email(email)
                     .password(passwordEncoder.encode(rawPassword))
-                    .role(Role.ADMIN)
+                    // .role(Role.ADMIN)
                     .build();
 
             userRepository.save(user);
