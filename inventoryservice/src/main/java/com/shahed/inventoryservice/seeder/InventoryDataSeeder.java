@@ -31,7 +31,7 @@ public class InventoryDataSeeder implements CommandLineRunner {
             Inventory inventory = Inventory.builder()
                     .productId((long) i)
                     .sku("SKU-" + i)
-                    .quantity(5 + random.nextInt(20)) // Quantity between 5–25
+                    .quantity(5 + random.nextInt(20))
                     .build();
 
             inventoryRepository.save(inventory);
