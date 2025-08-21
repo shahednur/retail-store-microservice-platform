@@ -39,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Transactional
     public Payment processPayment(Payment payment) {
-        payment.setStatus(PaymentStatus.PAID);
+        payment.setStatus(PaymentStatus.PENDING);
         payment.setPaidAt(LocalDateTime.now());
         return paymentRepository.save(payment);
     }
