@@ -1,6 +1,8 @@
 spring:
   application:
     name: order-service
+  profiles:
+    active: local
 
   jpa:
     hibernate:
