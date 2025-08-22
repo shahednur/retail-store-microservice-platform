@@ -6,9 +6,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.shahed.notificationservice.entity.Notification;
+import com.shahed.notificationservice.entity.NotificationStatus;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-    List<Notification> findByToUser(String toUser);
+    // Fetch all notifications for a user (latest first)
+    List<Notification> findByUserIdOrderByCreatedAtDesc(Long userId);
+
+    // Fetch unread notifications for a user
+    List<Notification> findByUserIdAndStatusOrderByCreatedAtDesc(Long userId, NotificationStatus status);
+
+    // Count unread notifications for badge count (like 🔔 icon)
+    long countByUserIdAndStatus(Long userId, NotificationStatus status);
 }
