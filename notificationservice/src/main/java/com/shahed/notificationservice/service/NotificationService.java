@@ -4,14 +4,25 @@ import java.util.List;
 import java.util.Optional;
 
 import com.shahed.notificationservice.entity.Notification;
+import com.shahed.notificationservice.entity.NotificationStatus;
 
 public interface NotificationService {
 
-    Notification sendNotification(Notification notification);
+    Notification createNotification(Long userId, String title, String message, String channel);
 
-    List<Notification> getAllNotifications();
+    void sendNotification(Notification notification);
 
-    Optional<Notification> getNotificationById(Long id);
+    List<Notification> getAllNotifications(Long userId);
 
-    List<Notification> getNotificationsByToUser(String toUser);
+    List<Notification> getUnreadNotifications(Long userId);
+
+    void markAsRead(Long notificationId);
+
+    void markAllAsRead(Long userId);
+
+    long getUnreadCound(Long userId);
+
+    void undateStatus(Long notificationId, NotificationStatus status);
+
+    void deleteNotification(Long notificationId);
 }
