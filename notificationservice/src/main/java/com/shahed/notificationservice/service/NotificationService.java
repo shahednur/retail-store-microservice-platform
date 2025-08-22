@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.shahed.notificationservice.entity.Notification;
+import com.shahed.notificationservice.entity.NotificationChannel;
 import com.shahed.notificationservice.entity.NotificationStatus;
 
 public interface NotificationService {
 
-    Notification createNotification(Long userId, String title, String message, String channel);
+    Notification createNotification(Long userId, String title, String message, NotificationChannel channel);
 
     void sendNotification(Notification notification);
 
@@ -20,7 +21,7 @@ public interface NotificationService {
 
     void markAllAsRead(Long userId);
 
-    long getUnreadCound(Long userId);
+    long getUnreadCount(Long userId);
 
     void undateStatus(Long notificationId, NotificationStatus status);
 
