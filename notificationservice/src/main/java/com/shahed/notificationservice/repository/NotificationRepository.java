@@ -19,4 +19,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     // Count unread notifications for badge count (like 🔔 icon)
     long countByUserIdAndStatus(Long userId, NotificationStatus status);
+
+    List<Notification> findByUserId(Long userId);
 }

@@ -33,13 +33,18 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void sendNotification(Notification notification) {
+    public Notification sendNotification(Notification notification) {
         // Here we'll integrate Email/SMS/Push provider later
 
         System.out.println("Sending notifition to user: " + notification.getUserId() + " via "
                 + notification.getChannel() + " : " + notification.getMessage());
         notification.setStatus(NotificationStatus.SENT);
-        notificationRepository.save(notification);
+        return notificationRepository.save(notification);
+    }
+
+    @Override
+    public List<Notification> getUserNotifications(Long userId) {
+        return notificationRepository.findByUserId(userId);
     }
 
     @Override
@@ -53,11 +58,12 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void markAsRead(Long notificationId) {
-        notificationRepository.findById(notificationId).ifPresent(notification -> {
-            notification.setStatus(NotificationStatus.READ);
-            notificationRepository.save(notification);
-        });
+    public Notification markAsRead(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new RuntimeException("Notification not found"));
+        notification.setStatus(NotificationStatus.READ);
+        notification.setReadAt(LocalDateTime.now());
+        return notificationRepository.save(notification);
     }
 
     @Override
