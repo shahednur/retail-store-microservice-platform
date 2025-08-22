@@ -51,6 +51,9 @@ public class Notification {
     @Column(name = "read_at")
     private LocalDateTime readAt;
 
+    @Column(name = "sent_at")
+    private LocalDateTime sentAt;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

@@ -39,6 +39,7 @@ public class NotificationServiceImpl implements NotificationService {
         System.out.println("Sending notifition to user: " + notification.getUserId() + " via "
                 + notification.getChannel() + " : " + notification.getMessage());
         notification.setStatus(NotificationStatus.SENT);
+        notification.setSentAt(LocalDateTime.now());
         return notificationRepository.save(notification);
     }
 

@@ -1,6 +1,8 @@
 spring:
   application:
     name: notification-service
+  profiles:
+    active: local
 
   jpa:
     hibernate:
