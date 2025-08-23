@@ -3,13 +3,6 @@ spring:
     name: notification-service
   profiles:
     active: local
-  kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      group-id: notification-service
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   mail:
     host: smtp.gmail.com
     port: 587
@@ -28,10 +21,25 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notification-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: true
+      auto-commit-interval: 1000ms
 server:
   port: 8085
-
+notification:
+  admin:
+    email: ${GMAIL_USERNAME:default@gmail.com}
+    phone: ${TWILIO_PHONE_NUMBER:+1234567890}
+    user-id: 1
+  retry:
+    max-attempts: 3
+    backoff-delay: 1000
 twilio:
   account-sid: ${TWILIO_ACCOUNT_SID:default_account_sid}
   auth-token: ${TWILIO_AUTH_TOKEN:default_auth_token}
