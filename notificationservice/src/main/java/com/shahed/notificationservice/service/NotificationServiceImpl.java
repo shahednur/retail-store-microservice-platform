@@ -2,14 +2,18 @@ package com.shahed.notificationservice.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.shahed.notificationservice.dispatcher.NotificationDispatcher;
 import com.shahed.notificationservice.entity.Notification;
 import com.shahed.notificationservice.entity.NotificationChannel;
 import com.shahed.notificationservice.entity.NotificationStatus;
 import com.shahed.notificationservice.repository.NotificationRepository;
+import com.shahed.notificationservice.sender.NotificationSender;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final NotificationDispatcher dispatcher;
+    private final Map<String, NotificationSender> senders;
 
     @Override
     public Notification createNotification(Long userId, String title, String message, NotificationChannel channel) {
@@ -33,13 +39,44 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    @Transactional
     public Notification sendNotification(Notification notification) {
-        // Here we'll integrate Email/SMS/Push provider later
+        NotificationSender sender = senders.get(notification.getChannel().name());
 
-        System.out.println("Sending notifition to user: " + notification.getUserId() + " via "
-                + notification.getChannel() + " : " + notification.getMessage());
-        notification.setStatus(NotificationStatus.SENT);
-        notification.setSentAt(LocalDateTime.now());
+        if (sender == null) {
+            throw new IllegalArgumentException(
+                    "Unsupported notification channel: " + notification.getChannel());
+        }
+
+        try {
+            // Send via the chosen sender
+            sender.send(notification);
+
+            // Set success status only in service, not in sender
+            notification.setStatus(NotificationStatus.SENT);
+            notification.setSentAt(LocalDateTime.now());
+
+            System.out.printf(
+                    "✅ Notification sent to user %s via %s: %s%n",
+                    notification.getUserId(),
+                    notification.getChannel(),
+                    notification.getMessage());
+
+            // Dispatch for async handling (websocket, push updates, etc.)
+            dispatcher.dispatch(notification);
+
+        } catch (Exception e) {
+            // Handle failure gracefully
+            notification.setStatus(NotificationStatus.FAILED);
+
+            System.err.printf(
+                    "❌ Failed to send notification to user %s via %s: %s%n",
+                    notification.getUserId(),
+                    notification.getChannel(),
+                    e.getMessage());
+        }
+
+        // Save final notification state (SENT or FAILED)
         return notificationRepository.save(notification);
     }
 

@@ -3,7 +3,17 @@ spring:
     name: notification-service
   profiles:
     active: local
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_USERNAME:default@gmail.com}
+    password: ${GMAIL_PASSWORD:defaultpassword}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,6 +24,11 @@ spring:
 
 server:
   port: 8085
+
+twilio:
+  account-sid: ${TWILIO_ACCOUNT_SID:default_account_sid}
+  auth-token: ${TWILIO_AUTH_TOKEN:default_auth_token}
+  phone-number: ${TWILIO_PHONE_NUMBER:+1234567890}
 
 eureka:
   instance:

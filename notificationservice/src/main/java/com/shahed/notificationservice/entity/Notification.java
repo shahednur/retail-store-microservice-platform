@@ -45,6 +45,9 @@ public class Notification {
     @Column(nullable = false, length = 20)
     private NotificationStatus status;
 
+    @Column(name = "to_phone")
+    private String toUserPhone;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 

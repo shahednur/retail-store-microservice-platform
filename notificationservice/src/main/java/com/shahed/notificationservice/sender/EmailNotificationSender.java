@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.shahed.notificationservice.entity.Notification;
 import com.shahed.notificationservice.entity.NotificationStatus;
-
+import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
+@Component("EMAIL")
 @Service
 @RequiredArgsConstructor
 public class EmailNotificationSender implements NotificationSender {

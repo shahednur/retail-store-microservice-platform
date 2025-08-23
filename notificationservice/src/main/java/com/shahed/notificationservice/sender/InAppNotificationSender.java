@@ -10,6 +10,9 @@ import com.shahed.notificationservice.repository.NotificationRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.stereotype.Component;
+
+@Component("IN_APP")
 @Service
 @RequiredArgsConstructor
 public class InAppNotificationSender implements NotificationSender {
