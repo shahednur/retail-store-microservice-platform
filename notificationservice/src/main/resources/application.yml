@@ -3,6 +3,13 @@ spring:
     name: notification-service
   profiles:
     active: local
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notification-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   mail:
     host: smtp.gmail.com
     port: 587
